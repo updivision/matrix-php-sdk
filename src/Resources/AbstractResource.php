@@ -14,7 +14,6 @@ use Updivision\Matrix\Matrix;
  */
 abstract class AbstractResource
 {
-
     /**
      * @var Matrix
      * @internal
@@ -28,6 +27,14 @@ abstract class AbstractResource
     protected $endpoint;
 
     /**
+     * The resource endpoint
+     *
+     * @internal
+     * @var string
+     */
+    protected $data = null;
+
+    /**
      * Resource constructor
      *
      * Constructs a new resource
@@ -39,19 +46,20 @@ abstract class AbstractResource
     public function __construct(Matrix $matrix)
     {
         $this->matrix = $matrix;
+        $this->data = session('updivision_matrix_data');
     }
 
     /**
      * Creates the endpoint
      *
-     * @param null $id The endpoint terminator
+     * @param null $resId The endpoint terminator
      * @return string
      * @internal
      *
      */
-    protected function endpoint($id = null)
+    protected function endpoint($resId = null)
     {
-        return $id === null ? $this->endpoint : $this->endpoint . '/' . $id;
+        return $resId === null ? $this->endpoint : $this->endpoint . '/' . $resId;
     }
 
     /**
@@ -61,5 +69,21 @@ abstract class AbstractResource
     protected function matrix()
     {
         return $this->matrix;
+    }
+
+    protected function setData($data)
+    {
+        session(['updivision_matrix_data' => $data]);
+        $this->data = $data;
+    }
+
+    protected function getData()
+    {
+        return $this->data;
+    }
+
+    protected function check()
+    {
+        return $this->data !== null;
     }
 }

@@ -10,6 +10,8 @@ use Updivision\Matrix\Exceptions\AuthenticationException;
 use Updivision\Matrix\Exceptions\ConflictingStateException;
 use Updivision\Matrix\Exceptions\RateLimitExceededException;
 use Updivision\Matrix\Exceptions\UnsupportedContentTypeException;
+use Updivision\Matrix\Resources\Room;
+use Updivision\Matrix\Resources\UserData;
 use Updivision\Matrix\Resources\UserSession;
 
 /**
@@ -149,5 +151,15 @@ class Matrix
     public function session()
     {
         return $this->session;
+    }
+
+    public function user()
+    {
+        return new UserData($this);
+    }
+
+    public function room()
+    {
+        return new Room($this);
     }
 }

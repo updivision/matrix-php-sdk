@@ -15,42 +15,6 @@ use GuzzleHttp\Exception\RequestException;
  */
 class ApiException extends Exception
 {
-
-    /**
-     * @internal
-     * @param RequestException $e
-     * @return AccessDeniedException|ApiException|AuthenticationException|ConflictingStateException|
-     * MethodNotAllowedException|NotFoundException|RateLimitExceededException|UnsupportedAcceptHeaderException|
-     * UnsupportedContentTypeException|ValidationException
-     */
-     public static function create(RequestException $e) {
-
-         if($response = $e->getResponse()) {
-             switch ($response->getStatusCode()) {
-                 case 400:
-                     return new ValidationException($e);
-                 case 401:
-                     return new AuthenticationException($e);
-                 case 403:
-                     return new AccessDeniedException($e);
-                 case 404:
-                     return new NotFoundException($e);
-                 case 405:
-                     return new MethodNotAllowedException($e);
-                 case 406:
-                     return new UnsupportedAcceptHeaderException($e);
-                 case 409:
-                     return new ConflictingStateException($e);
-                 case 415:
-                     return new UnsupportedContentTypeException($e);
-                 case 429:
-                     return new RateLimitExceededException($e);
-             }
-         }
-
-         return new ApiException($e);
-    }
-
     /**
      * @var RequestException
      * @internal
@@ -70,6 +34,39 @@ class ApiException extends Exception
     }
 
     /**
+     * @internal
+     * @param RequestException $e
+     * @return AccessDeniedException|ApiException|AuthenticationException|ConflictingStateException|
+     * MethodNotAllowedException|NotFoundException|RateLimitExceededException|UnsupportedAcceptHeaderException|
+     * UnsupportedContentTypeException|ValidationException
+     */
+    public static function create(RequestException $e) {
+        if ($response = $e->getResponse()) {
+            switch ($response->getStatusCode()) {
+                case 400:
+                    return new ValidationException($e);
+                case 401:
+                    return new AuthenticationException($e);
+                case 403:
+                    return new AccessDeniedException($e);
+                case 404:
+                    return new NotFoundException($e);
+                case 405:
+                    return new MethodNotAllowedException($e);
+                case 406:
+                    return new UnsupportedAcceptHeaderException($e);
+                case 409:
+                    return new ConflictingStateException($e);
+                case 415:
+                    return new UnsupportedContentTypeException($e);
+                case 429:
+                    return new RateLimitExceededException($e);
+            }
+        }
+        return new ApiException($e);
+    }
+
+    /**
      * Exception constructor
      *
      * Constructs a new exception.
@@ -80,6 +77,7 @@ class ApiException extends Exception
     public function __construct(RequestException $e)
     {
         $this->exception = $e;
+        $this->message = (string) $e->getMessage();
         parent::__construct();
     }
 }

@@ -7,7 +7,7 @@ use Updivision\Matrix\Resources\AbstractResource;
 /**
  * Session management
  *
- * This provides methods to login, logout and refresh token
+ * This provides methods to login and logout user
  *
  * @package Matrix\Resources
  */
@@ -22,48 +22,43 @@ class UserSession extends AbstractResource
     protected $endpoint = '';
 
     /**
-     * The session
+     * Authenticates the user, and issues an access token they can use to authorize themself in subsequent requests.
      *
-     * @internal
-     * @var array | null
+     * @param  string $username The username
+     * @param  string $password The password
+     * @return JSON             Authenticated user
      */
-    protected $session = null;
-
     public function login($username, $password)
     {
-        $user = $this->matrix()->request('POST', $this->endpoint('login'), [
+        $data = $this->matrix()->request('POST', $this->endpoint('login'), [
             'type' => 'm.login.password',
             'user' => $username,
             'password' => $password
         ]);
-        return $this->setSession($user);
+        $this->setData($data);
+        return $this->data;
     }
 
+    /**
+     * Invalidates an existing access token, so that it can no longer be used for authorization.
+     *
+     * @param  string $token The access token
+     * @return JSON          Empty json
+     */
     public function logout()
     {
-        $sess = $this->getSession();
-        dd($sess);
-        return $this->matrix()->request('POST', $this->endpoint('logout'), [], ['access_token' => $this->session['access_token']]);
+        if ($this->check()) {
+            $this->matrix()->request('POST', $this->endpoint('logout'), [], [
+                'access_token' => $this->data['access_token']
+            ]);
+            $this->setData(null);
+            return true;
+        }
+        throw new \Exception('Not authenticated');
     }
 
-    public function tokenrefresh()
+    public function check()
     {
-
-    }
-
-    private function getSession()
-    {
-        $this->session = session('updivision_matrix');
-        dd(session('updivision_matrix'));
-        return $this->session;
-    }
-
-    private function setSession($data)
-    {
-        session(['updivision_matrix' => $data]);
-        dd(session('updivision_matrix'));
-        $this->session = $data;
-
-        return $this->session;
+        return $this->check();
     }
 }
