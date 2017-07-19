@@ -29,7 +29,7 @@ Also, add the `Matrix` facade to the `aliases` array in your `app` configuration
 
 ## Contributing
 
-Thank you for considering contributing to the Matrix PHP SDK! Please read [CONTRIBUTING][] for details.
+Thank you for considering contributing to the Matrix PHP SDK! Please read [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## Code of Conduct
 
