@@ -57,8 +57,26 @@ class UserSession extends AbstractResource
         throw new \Exception('Not authenticated');
     }
 
+    /**
+     * Check if user is logged in
+     *
+     * @return boolean
+     */
     public function check()
     {
         return $this->check();
+    }
+
+    /**
+     * Get logged in user data
+     *
+     * @return Array
+     */
+    public function user()
+    {
+        if ($this->check()) {
+            return $this->data;
+        }
+        throw new \Exception('Not authenticated');
     }
 }
