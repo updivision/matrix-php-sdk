@@ -1,10 +1,6 @@
 # Matrix.org PHP SDK
 This is a package for using a Matrix chat client into a Laravel Project.
 
-## License
-
-Matrix PHP SDK is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
-
 ## Official Documentation
 
 You can find the Matrix Client-Server API documentation on [Matrix.org](http://matrix.org/docs/api/client-server/) website.
@@ -30,3 +26,15 @@ Also, add the `Matrix` facade to the `aliases` array in your `app` configuration
 ```php
 'Matrix' => Updivision\Matrix\Facades\Matrix::class,
 ```
+
+## Contributing
+
+Thank you for considering contributing to the Matrix PHP SDK! Please read [CONTRIBUTING](CONTRIBUTING.md) for details.
+
+## Code of Conduct
+
+In order to ensure that the community is welcoming to all, please review and abide by the [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## License
+
+Matrix PHP SDK is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
