@@ -58,16 +58,6 @@ class UserSession extends AbstractResource
     }
 
     /**
-     * Check if user is logged in
-     *
-     * @return boolean
-     */
-    public function check()
-    {
-        return $this->check();
-    }
-
-    /**
      * Get logged in user data
      *
      * @return Array

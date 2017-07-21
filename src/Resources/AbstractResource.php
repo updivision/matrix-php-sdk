@@ -82,7 +82,7 @@ abstract class AbstractResource
         return $this->data;
     }
 
-    protected function check()
+    public function check()
     {
         return $this->data !== null;
     }
