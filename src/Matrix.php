@@ -11,6 +11,7 @@ use Updivision\Matrix\Exceptions\ConflictingStateException;
 use Updivision\Matrix\Exceptions\RateLimitExceededException;
 use Updivision\Matrix\Exceptions\UnsupportedContentTypeException;
 use Updivision\Matrix\Resources\Room;
+use Updivision\Matrix\Resources\Media;
 use Updivision\Matrix\Resources\UserData;
 use Updivision\Matrix\Resources\UserSession;
 
@@ -46,6 +47,12 @@ class Matrix
     private $baseUrl;
 
     /**
+     * @internal
+     * @var string
+     */
+    private $domain;
+
+    /**
      * Constructs a new matrix api instance
      *
      * @matrix
@@ -56,7 +63,7 @@ class Matrix
     {
         $this->validateConstructorArgs($domain);
 
-        $this->baseUrl = $domain.'_matrix/client/r0';
+        $this->domain = $domain;
 
         $this->client = new Client();
 
@@ -78,9 +85,13 @@ class Matrix
      * @throws RateLimitExceededException
      * @throws UnsupportedContentTypeException
      */
-    public function request($method, $endpoint, array $data = null, array $query = null)
+    public function request($method, $endpoint, array $data = null, array $query = null, $rawData = false)
     {
         $options = ['json' => $data];
+
+        if ($rawData) {
+            $options = $data;
+        }
 
         if (isset($query)) {
             $options['query'] = $query;
@@ -155,11 +166,19 @@ class Matrix
 
     public function user()
     {
+        $this->baseUrl = $this->domain.'_matrix/client/r0';
         return new UserData($this);
     }
 
     public function room()
     {
+        $this->baseUrl = $this->domain.'_matrix/client/r0';
         return new Room($this);
+    }
+
+    public function media()
+    {
+        $this->baseUrl = $this->domain.'_matrix/media/r0';
+        return new Media($this);
     }
 }

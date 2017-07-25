@@ -113,7 +113,7 @@ class UserData extends AbstractResource
             }
             $userId = $this->data['user_id'];
         }
-        return $this->matrix()->request('GET', $this->endpoint('profile/'.$userId));
+        return $this->matrix()->request('GET', $this->endpoint('profile/'.urlencode($userId)));
     }
 
     /**
@@ -132,7 +132,7 @@ class UserData extends AbstractResource
             }
             $userId = $this->data['user_id'];
         }
-        return $this->matrix()->request('GET', $this->endpoint('profile/'.$userId.'/avatar_url'));
+        return $this->matrix()->request('GET', $this->endpoint('profile/'.urlencode($userId).'/avatar_url'));
     }
 
     /**
@@ -147,7 +147,7 @@ class UserData extends AbstractResource
     {
         if ($this->check()) {
             $userId = $this->data['user_id'];
-            return $this->matrix()->request('PUT', $this->endpoint('profile/'.$userId.'/avatar_url'), [
+            return $this->matrix()->request('PUT', $this->endpoint('profile/'.urlencode($userId).'/avatar_url'), [
                 'avatar_url' => $avatarUrl
             ], [
                 'access_token' => $this->data['access_token']
@@ -172,7 +172,7 @@ class UserData extends AbstractResource
             }
             $userId = $this->data['user_id'];
         }
-        return $this->matrix()->request('GET', $this->endpoint('profile/'.$userId.'/displayname'));
+        return $this->matrix()->request('GET', $this->endpoint('profile/'.urlencode($userId).'/displayname'));
     }
 
     /**
@@ -187,7 +187,7 @@ class UserData extends AbstractResource
     {
         if ($this->check()) {
             $userId = $this->data['user_id'];
-            return $this->matrix()->request('PUT', $this->endpoint('profile/'.$userId.'/displayname'), [
+            return $this->matrix()->request('PUT', $this->endpoint('profile/'.urlencode($userId).'/displayname'), [
                 'displayname' => $displayName
             ], [
                 'access_token' => $this->data['access_token']
@@ -204,16 +204,21 @@ class UserData extends AbstractResource
      */
     public function register($username, $password)
     {
-        $data = $this->matrix()->request('POST', $this->endpoint('register'), [
+        $userData = [
             'auth' => [
                 'type' => 'm.login.dummy'
             ],
-            'bind_email' => true,
-            'bind_msisdn' => true,
+            'bind_email' => false,
+            'bind_msisdn' => false,
             'password' => $password,
-            'username' => $username,
-            'x_show_msisdn' => true
-        ], [
+            'x_show_msisdn' => false
+        ];
+
+        if ($username) {
+            $userData['username'] = $username;
+        }
+
+        $data = $this->matrix()->request('POST', $this->endpoint('register'), $userData, [
             'kind' => 'user'
         ]);
         $this->setData($data);
