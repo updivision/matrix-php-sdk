@@ -82,14 +82,16 @@ class UserData extends AbstractResource
      * @return mixed|null             Empty json
      * @throws Exception
      */
-    public function password($password)
+    public function password($oldPassword, $newPassword)
     {
         if ($this->check()) {
             return $this->matrix()->request('POST', $this->endpoint('account/password'), [
                 'auth' => [
-                    'type' => 'm.login.password'
+                    'type' => 'm.login.password',
+                    'user' => $this->data['user_id'],
+                    'password' => $oldPassword
                 ],
-                'new_password' => $password
+                'new_password' => $newPassword
             ], [
                 'access_token' => $this->data['access_token']
             ]);
