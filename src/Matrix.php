@@ -65,6 +65,8 @@ class Matrix
 
         $this->domain = $domain;
 
+        $this->baseUrl = $domain.'_matrix/client/r0';
+
         $this->client = new Client();
 
         $this->setupResources();
@@ -155,6 +157,7 @@ class Matrix
      */
     private function setupResources()
     {
+        $this->baseUrl = $this->domain.'_matrix/client/r0';
         // Session
         $this->session = new UserSession($this);
     }
