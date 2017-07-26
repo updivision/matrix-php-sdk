@@ -67,7 +67,7 @@ class Matrix
 
         $this->baseUrl = $domain.'_matrix/client/r0';
 
-        $this->client = new Client();
+        $this->client = new Client(['verify' => dirname(__FILE__) . '/certificate/cacert.pem']);
 
         $this->setupResources();
     }
