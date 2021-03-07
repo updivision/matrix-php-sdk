@@ -4,7 +4,7 @@
     "keywords": ["matrix", "laravel", "sdk"],
     "type": "package",
     "require": {
-        "guzzlehttp/guzzle": "~6.0",
+        "guzzlehttp/guzzle": "~7.0",
         "php": ">=5.4.0"
     },
     "require-dev": {
